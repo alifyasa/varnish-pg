@@ -17,13 +17,6 @@ varnish-cache:
       sub vcl_recv {
         call devicedetect;
       }
-
-      sub vcl_hash {
-        hash_data(req.url);  # Create cache key based on request URL
-        hash_data(req.http.User-Agent);  # Hash 'User-Agent' header
-        hash_data(req.http.X-Forwarded-For);  # Include forwarded IP in cache key
-        hash_data(client.ip);  # Include client's IP in cache key
-      }
       
       sub vcl_backend_response {
         if (bereq.http.X-UA-Device) {
