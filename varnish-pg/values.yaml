@@ -34,17 +34,8 @@ varnish-cache:
       }
 
       sub vcl_hash {
-          hash_data(req.url);  # Create cache key based on request URL
-
-          if (req.http) {
-              foreach (req.http) {
-                  if (beresp.http.Cache-Control && req.http.Cache-Control) {
-                      continue;  # Skip headers affecting cache behavior
-                  }
-                  hash_data(req.http[header]);  # Include headers in cache key
-              }
-          }
-
-          hash_data(req.http.X-Forwarded-For);  # Include forwarded IP in cache key
-          hash_data(client.ip);  # Include client's IP in cache key
+        hash_data(req.url);  # Create cache key based on request URL
+        hash_data(req.http.User-Agent);  # Hash 'User-Agent' header
+        hash_data(req.http.X-Forwarded-For);  # Include forwarded IP in cache key
+        hash_data(client.ip);  # Include client's IP in cache key
       }
