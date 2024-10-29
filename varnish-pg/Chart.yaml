@@ -6,5 +6,5 @@ version: 0.1.0
 appVersion: "1.16.0"
 dependencies:
   - name: varnish-cache
-    version: "1.1.1"  # Specify the version you want
+    version: "1.1.1"
     repository: "oci://registry-1.docker.io/varnish"
