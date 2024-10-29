@@ -12,6 +12,15 @@ spec:
       labels:
         app: fastapi-hello
     spec:
+      initContainers:
+      - name: copy-app
+        image: busybox
+        command: ['sh', '-c', 'cp /config/main.py /app/main.py']
+        volumeMounts:
+        - name: app-volume
+          mountPath: /app
+        - name: app-config-volume
+          mountPath: /config
       containers:
       - name: fastapi-hello
         image: tiangolo/uvicorn-gunicorn-fastapi:python3.11  # Ready-made FastAPI image
@@ -25,5 +34,7 @@ spec:
           mountPath: /app
       volumes:
       - name: app-volume
+        emptyDir: {}
+      - name: app-config-volume
         configMap:
           name: fastapi-app-config
