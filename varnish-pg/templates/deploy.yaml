@@ -16,4 +16,4 @@ spec:
       - name: simple-server
         image: alifyasa/simple-server:latest
         ports:
-        - containerPort: 80
+        - containerPort: 8000
