@@ -2,14 +2,11 @@ varnish-cache:
   server:
     vclConfig: |
       vcl 4.1;
+      include "devicedetect.vcl";
 
       backend default {
-        .host = "simple-server-service";  # Define the backend server address
-        .port = "80";                     # Define the backend server port
-
-        .connect_timeout = 1s;            # Set timeout for backend connection
-        .first_byte_timeout = 5s;         # Set timeout for first byte response
-        .between_bytes_timeout = 2s;      # Set timeout for subsequent data transfers
+        .host = "simple-server-service";
+        .port = "80";
       }
 
       sub vcl_backend_fetch {
@@ -17,20 +14,8 @@ varnish-cache:
         set bereq.http.X-Custom-Header = "CustomValue";  # Add custom header to backend request
       }
 
-      sub vcl_backend_response {
-        if (beresp.status == 200) {
-          set beresp.ttl = 1m;  # Cache successful responses for 1 minute
-        }
-      }
-
-      sub vcl_backend_response {
-        set beresp.grace = 1h;  # Serve stale responses for 1 hour when the cache is expired
-      }
-
       sub vcl_recv {
-        if (req.http.Cookie) {
-          return (pass);  # Bypass cache for requests containing cookies
-        }
+        call devicedetect;
       }
 
       sub vcl_hash {
@@ -38,4 +23,22 @@ varnish-cache:
         hash_data(req.http.User-Agent);  # Hash 'User-Agent' header
         hash_data(req.http.X-Forwarded-For);  # Include forwarded IP in cache key
         hash_data(client.ip);  # Include client's IP in cache key
+      }
+      
+      sub vcl_backend_response {
+        if (bereq.http.X-UA-Device) {
+          if (!beresp.http.Vary) { # no Vary at all
+            set beresp.http.Vary = "X-UA-Device";
+          } elsif (beresp.http.Vary !~ "X-UA-Device") { # add to existing Vary
+            set beresp.http.Vary = beresp.http.Vary + ", X-UA-Device";
+          }
+        }
+        # comment this out if you don't want the client to know your classification
+        set beresp.http.X-UA-Device = bereq.http.X-UA-Device;
+      }
+
+      sub vcl_deliver {
+        if ((req.http.X-UA-Device) && (resp.http.Vary)) {
+          set resp.http.Vary = regsub(resp.http.Vary, "X-UA-Device", "User-Agent");
+        }
       }
