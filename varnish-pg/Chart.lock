@@ -1,0 +1,6 @@
+dependencies:
+- name: varnish-cache
+  repository: oci://registry-1.docker.io/varnish
+  version: 1.1.1
+digest: sha256:fc7e74a65c182b01775b5ac5e20103e28a88cda8424e5cc5bd9bc3ce19957329
+generated: "2024-10-29T09:09:47.2996582+07:00"

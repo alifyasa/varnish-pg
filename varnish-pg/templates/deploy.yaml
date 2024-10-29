@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-hello
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-hello
+  template:
+    metadata:
+      labels:
+        app: fastapi-hello
+    spec:
+      containers:
+      - name: fastapi-hello
+        image: tiangolo/uvicorn-gunicorn-fastapi:python3.11  # Ready-made FastAPI image
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MY_ENV_VARIABLE
+          value: "Hello from Kubernetes!"  # Example environment variable
+        volumeMounts:
+        - name: app-volume
+          mountPath: /app
+      volumes:
+      - name: app-volume
+        configMap:
+          name: fastapi-app-config

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-hello-service
+spec:
+  selector:
+    app: fastapi-hello
+  ports:
+  - port: 80
+    targetPort: 8000
+  type: LoadBalancer
