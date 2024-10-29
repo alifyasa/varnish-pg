@@ -24,4 +24,4 @@ jobs:
         with:
           context: ./simple-server
           push: true
-          tags: alifyasa/varnish-pg:latest
+          tags: alifyasa/simple-server:latest
