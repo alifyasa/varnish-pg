@@ -5,7 +5,7 @@ varnish-cache:
       include "devicedetect.vcl";
 
       backend default {
-        .host = "simple-server-service";
+        .host = "varnish-pg-service";
         .port = "80";
       }
 
