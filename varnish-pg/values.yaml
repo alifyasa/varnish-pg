@@ -14,6 +14,7 @@ varnish-cache:
       }
       
       sub vcl_backend_response {
+        set beresp.ttl = 5m;
         if (bereq.http.X-UA-Device) {
           if (!beresp.http.Vary) { # no Vary at all
             set beresp.http.Vary = "X-UA-Device";
