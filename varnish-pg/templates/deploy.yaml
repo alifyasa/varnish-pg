@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simple-server-deployment
+  name: varnish-pg-backend-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: simple-server
+      app: varnish-pg-backend
   template:
     metadata:
       labels:
-        app: simple-server
+        app: varnish-pg-backend
     spec:
       containers:
-      - name: simple-server
-        image: alifyasa/simple-server:latest
+      - name: varnish-pg-backend
+        image: alifyasa/varnish-pg-backend:latest
         ports:
         - containerPort: 8000

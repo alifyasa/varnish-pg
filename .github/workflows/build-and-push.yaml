@@ -22,6 +22,6 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./simple-server
+          context: ./backend
           push: true
-          tags: alifyasa/simple-server:latest
+          tags: alifyasa/varnish-pg-backend:latest
