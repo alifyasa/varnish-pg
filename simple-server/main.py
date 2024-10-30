@@ -11,18 +11,18 @@ templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/", response_class=HTMLResponse)
-async def index(request: Request):
+def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/stats")
-async def stats(request: Request):
+def stats(request: Request):
     headers = request.headers
     return {"headers": dict(headers), "currentTime": datetime.now()}
 
 
 @app.get("/generate-image")
-async def generate_image(request: Request, x_ua_device: str = Header(None)):
+def generate_image(request: Request, x_ua_device: str = Header(None)):
     # Determine the text to display on the image
     user_agent = (
         x_ua_device or request.headers.get("User-Agent") or "Request has no user agent."
