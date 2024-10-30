@@ -9,11 +9,6 @@ varnish-cache:
         .port = "80";
       }
 
-      sub vcl_backend_fetch {
-        set bereq.http.Host = "www.example.com";  # Set Host header for backend requests
-        set bereq.http.X-Custom-Header = "CustomValue";  # Add custom header to backend request
-      }
-
       sub vcl_recv {
         call devicedetect;
       }
