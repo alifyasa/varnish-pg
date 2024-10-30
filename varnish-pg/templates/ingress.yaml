@@ -13,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: varnish-pg-service
+            name: varnish-pg-varnish-cache
             port:
               number: 80
