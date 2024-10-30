@@ -22,10 +22,10 @@ def stats(request: Request):
 
 
 @app.get("/generate-image")
-def generate_image(request: Request, x_ua_device: str = Header(None)):
+def generate_image(request: Request):
     # Determine the text to display on the image
     user_agent = (
-        x_ua_device or request.headers.get("User-Agent") or "Request has no user agent."
+        request.headers.get("X-UA-Device") or request.headers.get("User-Agent") or "Request has no user agent."
     )
     text = f"This image has been accessed from {user_agent}"
 
